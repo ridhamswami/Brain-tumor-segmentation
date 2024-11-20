@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Glioma Detection</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- Navigation Bar with Logo -->
+    <header class="bg-dark text-light p-3">
+        <div class="container d-flex justify-content-between align-items-center">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Glioma Detection Logo" class="logo rounded-circle">
+            <nav>
+                <ul class="nav">
+                    <li class="nav-item"><a class="nav-link text-light" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-light" href="/about">About</a></li>
+                    <li class="nav-item"><a class="nav-link text-light" href="/contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container my-4">
+        <!-- Welcome Section -->
+        <section class="bg-light p-4 rounded my-4">
+            <h2>Welcome to Glioma Detection</h2>
+            <p>We aim to provide advanced AI solutions for diagnosing gliomas through MRI scans. The process of accurately interpreting MRI scans for glioma detection can be complex and challenging.</p>
+        </section>
+
+        <!-- Upload MRI Scan Section -->
+        <section class="upload-section bg-white p-4 rounded my-5 shadow-sm">
+            <div class="col-md-6 mx-auto">
+                <h4 class="text-center">Upload MRI Scan</h4>
+                <!-- Message Area for Feedback -->
+                <div id="message" class="text-center"></div>
+                <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="file">Choose MRI file to upload (NIfTI format only):</label>
+                        <input type="file" class="form-control" id="file" name="file" accept=".nii,.nii.gz">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Upload</button>
+                </form>
+                <p class="mt-3 text-center text-muted">Please ensure the MRI scan is in NIfTI format (.nii or .nii.gz). After uploading, our system will automatically process the scan and provide results based on AI-powered analysis.</p>
+            </div>
+        </section>
+
+        <!-- Mock Result Section -->
+        {% if tumor_detected is not none %}
+        <section id="results-section" class="bg-light p-4 rounded my-5 shadow-sm">
+            <h4 class="text-center">Results</h4>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Prediction Type</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Brain Tumor Detection</td>
+                        <td>{{ 'Tumor Detected' if tumor_detected else 'No Tumor Detected' }}</td>
+                    </tr>
+                    <tr>
+                        <td>Survival Prediction</td>
+                        <td>{{ survival_prediction if tumor_detected else 'Not Applicable' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        {% endif %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light text-center p-3">
+        <p>© 2024 Glioma Detection. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
